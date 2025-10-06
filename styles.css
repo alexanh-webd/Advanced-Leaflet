@@ -6,3 +6,21 @@ body {
 #map {
     height: 97vh;
 }
+/* Popup box wider */
+.leaflet-popup-content-wrapper {
+    width: 800px !important;   /* increase popup width */
+    max-width: 900px !important;
+}
+
+/* Inner popup content */
+.leaflet-popup-content {
+    width: 800px !important;   /* ensure chart fits */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Chart container */
+.chart-container, 
+.frappe-chart {
+    width: 100% !important;   /* take full popup width */
+}
