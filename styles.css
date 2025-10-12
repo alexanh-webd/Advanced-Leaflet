@@ -24,3 +24,93 @@ body {
 .frappe-chart {
     width: 100% !important;   /* take full popup width */
 }
+
+.customBtn {
+    margin-top: 0px !important;
+    margin-bottom: 10px !important; 
+}
+
+.customSelectInMigration, .customSelectInPopulation {
+    width:40% !important;
+    height: 30px !important;
+    margin-top: 20px !important;
+    padding-left: 2px !important;
+    padding-top: 0px !important;
+    padding-right: 0px !important;
+    padding-bottom: 0px !important;
+    font: 16px Arial, sans-serif !important;
+}
+
+@media (min-width: 800px) {
+        /* Popup box wider */
+    .leaflet-popup-content-wrapper {
+        width: 800px !important;   /* increase popup width */
+        max-width: 800px !important;
+    }
+
+    /* Inner popup content */
+    .leaflet-popup-content {
+        width: 800px !important;   /* ensure chart fits */
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Chart container */
+    .chart-container, 
+    .frappe-chart {
+        width: 100% !important;   /* take full popup width */
+    }
+
+    .customBtn {
+        margin-top: 0px !important;
+        margin-bottom: 10px !important; 
+    }
+
+    .customSelectInMigration, .customSelectInPopulation {
+        width:40% !important;
+        height: 30px !important;
+        margin-top: 20px !important;
+        padding-left: 2px !important;
+        padding-top: 0px !important;
+        padding-right: 0px !important;
+        padding-bottom: 0px !important;
+        font: 16px Arial, sans-serif !important;
+    }
+}
+
+@media (max-width: 800px) {
+     /* Popup box wider */
+    .leaflet-popup-content-wrapper {
+        width: 400px !important;   /* increase popup width */
+        max-width: 400px !important;
+    }
+
+    /* Inner popup content */
+    .leaflet-popup-content {
+        width: 400px !important;   /* ensure chart fits */
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Chart container */
+    .chart-container, 
+    .frappe-chart {
+        width: 100% !important;   /* take full popup width */
+    }
+
+    .customBtn {
+        margin-top: 0px !important;
+        margin-bottom: 10px !important; 
+    }
+
+    .customSelectInMigration, .customSelectInPopulation {
+        width:40% !important;
+        height: 30px !important;
+        margin-top: 20px !important;
+        padding-left: 2px !important;
+        padding-top: 0px !important;
+        padding-right: 0px !important;
+        padding-bottom: 0px !important;
+        font: 16px Arial, sans-serif !important;
+    }
+}

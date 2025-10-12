@@ -307,18 +307,28 @@ const getFeature = (feature, layer, combined) => {
     });
     // This is the option for the user to choose to change the data they want to see
     const selectionInMigration = document.createElement("select");
+    selectionInMigration.className = "form-select form-select-lg mb-3";
+    selectionInMigration.ariaLabel = "Large select example";
+    selectionInMigration.id = "chartSelector1InMigration";
     const option11 = document.createElement("option");
     const option21 = document.createElement("option");
+    const option00 = document.createElement("option");
     selectionInMigration.id = "migrationSelector";
     option11.value = "default";
     option11.innerText = "Default";
     option21.value = "migrationNet";
     option21.innerText = "Net migration";
+    option00.value = "Seclect_data_to_display";
+    option00.innerText = "Select data to display";
+    selectionInMigration.appendChild(option00);
     selectionInMigration.appendChild(option11);
     selectionInMigration.appendChild(option21);
+    //firstDropDownContainer.appendChild(selectionInMigration);
 
     // This is the option for the user to choose the operation that they want to do with the data
     const selectionOperationInMigration = document.createElement("select");
+    selectionOperationInMigration.className = "form-select form-select-lg mb-3 customSelectInMigration";
+    selectionOperationInMigration.ariaLabel = "Large select example";
     selectionOperationInMigration.id = "operationInMigration"
     const operation1 = document.createElement("option");
     const operation2 = document.createElement("option");
@@ -334,7 +344,14 @@ const getFeature = (feature, layer, combined) => {
     selectionOperationInMigration.appendChild(operation2);
     selectionOperationInMigration.appendChild(operation3);
     
-    
+
+    // Create download buutton for migration
+    const dowloadBtnInMigration = document.createElement("button");
+    dowloadBtnInMigration.type = "button";
+    dowloadBtnInMigration.className = "btn btn-outline-secondary";
+    dowloadBtnInMigration.id = "downloadBtnInMigration";
+    dowloadBtnInMigration.innerText = "Click to download";
+    // This is the pop up when user click to the municipality which is from GeoJson
     layer.on("popupopen", () => {
         let comingData = null;
         let goingDataLayer = null;
@@ -345,7 +362,7 @@ const getFeature = (feature, layer, combined) => {
 
             }
         })
-
+        // Taking the data out from the object arr
         let populationDataInMigration = [];
         totalPopulationByMunicipalityInMigration.forEach((municipality) => {
 
@@ -376,6 +393,7 @@ const getFeature = (feature, layer, combined) => {
                 percentageRes.push(res*100);
             }
         }
+        // Initialize data before visulization
         let goingPerRes = [];
         for (let i = 0; i < 25; i++) {
             if (populationByRegionInMigration[i] === 0) {
@@ -392,16 +410,16 @@ const getFeature = (feature, layer, combined) => {
             "2011","2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"
         ],
         datasets: [
-            {
-                name: "Amount Coming", type: "bar",
-                values: comingData
-            },
-            {
-                name: "Amount Going", type: "line",
-                values: goingDataLayer
-            }
-        ]
-    }
+                {
+                    name: "Amount Coming", type: "bar",
+                    values: comingData
+                },
+                {
+                    name: "Amount Going", type: "line",
+                    values: goingDataLayer
+                }
+            ]
+        }
 
         let chart = new frappe.Chart(migrationChart, {  // or a DOM element,
                                                 // new Chart() in case of ES6 module with above usage
@@ -412,6 +430,7 @@ const getFeature = (feature, layer, combined) => {
         colors: ['#7cd6fd', '#743ee2']
         
         })
+        let downloadedChart = null;
         selectionInMigration.addEventListener("change", function(e) {
             let value = e.target.value;
             console.log(value)
@@ -436,13 +455,21 @@ const getFeature = (feature, layer, combined) => {
                     type: 'axis-mixed', // or 'bar', 'line', 'scatter', 'pie', 'percentage'
                     height: 250,
                     colors: ['#7cd6fd', '#743ee2']
-                })    
+                })
+                downloadedChart = migrationNetChartDis;  
             } else if (value === "default") {
                 migrationNetChart.innerHTML = "";
+                downloadedChart = null;
+                downloadedChart = chart
             }
         })
 
+        dowloadBtnInMigration.addEventListener("click", function() {
+            downloadedChart.export();
+        })
+
         // Selection of operation
+        // Initialize data for eah case of the operation
         selectionOperationInMigration.addEventListener("change", function(e) {
             let operationValue = e.target.value;
             console.log(operationValue);
@@ -513,14 +540,18 @@ const getFeature = (feature, layer, combined) => {
                 })
 
             }
+
         })
+        // Download btn for migration
+    
     })
+
     //console.log(layer)
     const popUp = document.createElement("ul");
     const nameRow = document.createElement("li");
     const positiveRow = document.createElement("li");
     const negativeRow = document.createElement("li");
-    const selectionRow = document.createElement("li");
+    //const selectionRow = document.createElement("li");
     const chartRow = document.createElement("li");
     const operationRow = document.createElement("li");
     const operationChartRow = document.createElement("li");
@@ -534,17 +565,18 @@ const getFeature = (feature, layer, combined) => {
     //chartRow.innerHTML = chart;
     chartRow.appendChild(migrationChart);
     chartRow.appendChild(migrationNetChart);
-    selectionRow.appendChild(selectionInMigration);
+    //selectionRow.appendChild(selectionInMigration);
     operationRow.appendChild(questionRow);
     operationRow.appendChild(selectionOperationInMigration);
     operationChartRow.appendChild(operationChart)
-    popUp.appendChild(selectionRow);
+    popUp.appendChild(selectionOperationInMigration);
     popUp.appendChild(nameRow);
     popUp.appendChild(positiveRow);
     popUp.appendChild(negativeRow);
     popUp.appendChild(chartRow);
     popUp.appendChild(operationRow);
     popUp.appendChild(operationChartRow);
+    popUp.appendChild(dowloadBtnInMigration)
     layer.bindPopup(
         popUp
     )
@@ -556,6 +588,14 @@ const getFeatureForComingPeople = (feature, layer, comingArr) => {
 
     const comingChart = document.createElement("div");
     comingChart.id = "comingChart-" + name.replace(/\s + /g, "-");
+
+    //download btn
+    const downloadBtnInComing = document.createElement("button");
+    downloadBtnInComing.type = "button";
+    downloadBtnInComing.className = "btn btn-outline-secondary customBtn";
+    downloadBtnInComing.id = "downloadBtnInComing";
+    downloadBtnInComing.innerText = "Click to download";
+    
     //let going = 0;
     let coming = 0;
     comingArr.forEach((element) => {
@@ -629,25 +669,32 @@ const getFeatureForComingPeople = (feature, layer, comingArr) => {
         height: 250,
         colors: ['#262626', '#ff991d']
         })
+        downloadBtnInComing.addEventListener("click", function() {
+            chart.export();
+        })
     })
     //console.log(layer)
+    const containerForComingPop = document.createElement("div");
     const popUp = document.createElement("ul");
     const nameRow = document.createElement("li");
     const positiveRow = document.createElement("li");
     const negativeRow = document.createElement("li");
-    const chartRow = document.createElement("li");
+    //const chartRow = document.createElement("li");
     nameRow.innerText = "Name: " + name;
     positiveRow.innerText = "Total coming: " + coming;
     //negativeRow.innerText = "Total leaving: " + going;
     //chartRow.innerHTML = chart;
-    chartRow.appendChild(comingChart);
+    //chartRow.appendChild(comingChart);
     popUp.appendChild(nameRow);
     popUp.appendChild(positiveRow);
-    popUp.appendChild(negativeRow);
-    popUp.appendChild(chartRow);
+    popUp.appendChild(comingChart);
+    //popUp.appendChild(chartRow);
+    popUp.appendChild(downloadBtnInComing);
+    containerForComingPop.appendChild(popUp);
     layer.bindPopup(
-        popUp
+        containerForComingPop
     )
+    containerForComingPop.style.margin = "10px";
 };
 
 const getFeatureForPopulation = (feature, layer, populationDataObjectToArr) => {
@@ -668,7 +715,7 @@ const getFeatureForPopulation = (feature, layer, populationDataObjectToArr) => {
     });
 
     const selection = document.createElement("select");
-    selection.className = "form-select form-select-lg mb-3";
+    selection.className = "form-select form-select-lg mb-3 customSelectInPopulation";
     selection.ariaLabel = "Large select example";
     const option = document.createElement("option");
     const option1 = document.createElement("option");
@@ -823,7 +870,7 @@ const getFeatureForPopulation = (feature, layer, populationDataObjectToArr) => {
     })
 
     const popUp = document.createElement("ul");
-    const header1 = document.createElement("h1");
+    const header1 = document.createElement("p");    
     const nameRow = document.createElement("li");
     const selecitonRow = document.createElement("li");
     //const positiveRow = document.createElement("li");
