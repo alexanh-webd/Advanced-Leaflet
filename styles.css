@@ -103,7 +103,7 @@ body {
         margin-bottom: 10px !important; 
     }
 
-    .customSelectInMigration, .customSelectInPopulation {
+    .customSelectInMigration, .customSelectInPopulation, .customSelectInMigrationFirst {
         width:40% !important;
         height: 30px !important;
         margin-top: 20px !important;

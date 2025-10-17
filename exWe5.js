@@ -307,7 +307,7 @@ const getFeature = (feature, layer, combined) => {
     });
     // This is the option for the user to choose to change the data they want to see
     const selectionInMigration = document.createElement("select");
-    selectionInMigration.className = "form-select form-select-lg mb-3";
+    selectionInMigration.className = "form-select form-select-lg mb-3 customSelectInMigration";
     selectionInMigration.ariaLabel = "Large select example";
     selectionInMigration.id = "chartSelector1InMigration";
     const option11 = document.createElement("option");
@@ -431,6 +431,7 @@ const getFeature = (feature, layer, combined) => {
         
         })
         let downloadedChart = null;
+        let downloadedChart2 = null;
         selectionInMigration.addEventListener("change", function(e) {
             let value = e.target.value;
             console.log(value)
@@ -460,13 +461,12 @@ const getFeature = (feature, layer, combined) => {
             } else if (value === "default") {
                 migrationNetChart.innerHTML = "";
                 downloadedChart = null;
+                
                 downloadedChart = chart
             }
         })
 
-        dowloadBtnInMigration.addEventListener("click", function() {
-            downloadedChart.export();
-        })
+        
 
         // Selection of operation
         // Initialize data for eah case of the operation
@@ -495,6 +495,7 @@ const getFeature = (feature, layer, combined) => {
                     height: 250,
                     colors: ['#303030', '#ff3434']
                 })
+                downloadedChart2 = operationChartShow;
             } else if (operationValue === "percentage") {
                 operationChart.innerHTML = "";
                 let comingOverTotalpop = {
@@ -516,7 +517,8 @@ const getFeature = (feature, layer, combined) => {
                     height: 250,
                     colors: ['#363636', '#e23e3e']
                 })
-
+                downloadedChart2 = null;
+                downloadedChart2 = comingPercentageChart;
             } else if (operationValue === "goingPercentage") {
                 operationChart.innerHTML = "";
                 let goingOverTotalpop = {
@@ -538,11 +540,16 @@ const getFeature = (feature, layer, combined) => {
                     height: 250,
                     colors: ['#1f1f1f', '#743ee2']
                 })
-
+                downloadedChart2 = null;
+                downloadedChart2 = goingPercentageChart;
             }
 
         })
         // Download btn for migration
+        dowloadBtnInMigration.addEventListener("click", function() {
+            downloadedChart.export();
+            downloadedChart2.export();
+        })
     
     })
 
@@ -554,6 +561,7 @@ const getFeature = (feature, layer, combined) => {
     //const selectionRow = document.createElement("li");
     const chartRow = document.createElement("li");
     const operationRow = document.createElement("li");
+    const firstRow = document.createElement("li");
     const operationChartRow = document.createElement("li");
     const questionRow = document.createElement("p");
     //const chartBox = document.createElement("div");
@@ -563,18 +571,20 @@ const getFeature = (feature, layer, combined) => {
     negativeRow.innerText = "Total leaving: " + going;
     questionRow.innerText = "What operations do you want to do with the data?"
     //chartRow.innerHTML = chart;
+    firstRow.appendChild(selectionInMigration)
     chartRow.appendChild(migrationChart);
     chartRow.appendChild(migrationNetChart);
     //selectionRow.appendChild(selectionInMigration);
     operationRow.appendChild(questionRow);
     operationRow.appendChild(selectionOperationInMigration);
     operationChartRow.appendChild(operationChart)
-    popUp.appendChild(selectionOperationInMigration);
+    popUp.appendChild(firstRow);
     popUp.appendChild(nameRow);
     popUp.appendChild(positiveRow);
     popUp.appendChild(negativeRow);
     popUp.appendChild(chartRow);
     popUp.appendChild(operationRow);
+    popUp.appendChild(selectionOperationInMigration);
     popUp.appendChild(operationChartRow);
     popUp.appendChild(dowloadBtnInMigration)
     layer.bindPopup(
