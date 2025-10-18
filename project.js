@@ -20,9 +20,9 @@ const fetchDataURL = async (url, body) => {
 
 // Fetch the URL with the help of Migration_query.json
 const initializeData = async () => {
-    const migrationData = await (await fetch("migration_query.json")).json();
-    const migrationGoingData = await (await fetch("migration_query_Going.json")).json();
-    const populationData = await (await fetch("population_query.json")).json();
+    const migrationData = await (await fetch("query/migration_query.json")).json();
+    const migrationGoingData = await (await fetch("query/migration_query_Going.json")).json();
+    const populationData = await (await fetch("query/population_query.json")).json();
     //console.log(migrationData);
     const dataSet = await fetchDataURL("https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/muutl/statfin_muutl_pxt_11a2.px", migrationData);
     const goingDataSet = await fetchDataURL("https://pxdata.stat.fi/PxWeb/api/v1/fi/StatFin/muutl/statfin_muutl_pxt_11a2.px", migrationGoingData);
